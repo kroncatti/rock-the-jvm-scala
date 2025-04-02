@@ -30,5 +30,5 @@ object AbstractDataTypes extends App{
   // How are they different ?
   // 1 - Traits DO NOT have constructor params
   // 2 - You can only extend one class, but you can inherit multiple traits
-  // 3 - traits = behaviour, abstract_class = "thing"
+  // 3 - traits = "behaviour/adjectives", abstract_class = "thing"
 }

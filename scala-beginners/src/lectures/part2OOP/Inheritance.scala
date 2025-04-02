@@ -54,5 +54,5 @@ object Inheritance extends App {
   // `final` will not allow us to change stuff:
   // - use `final` on members;
   // - use `final` on entire classes;
-  // - `sealed` the class;
+  // - `sealed` the class: The sealed keyword means that all subclasses of the class must be defined in the same source file;
 }

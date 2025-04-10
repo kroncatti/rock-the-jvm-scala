@@ -21,7 +21,7 @@ object Generics extends App {
   val listOfStrings = new MyList[String]
 
   // generic methods
-  object MyList {
+  private object MyList {
     def empty[A]: MyList[A] = ???
   }
   val emptyListOfIntegers = MyList.empty[Int]
@@ -55,6 +55,4 @@ object Generics extends App {
 
   class OtherCage[A >: Animal](animal: A)
   // val cage = new Cage(new Dog) // does not work, Dog is a subtype of Animal
-
-  // expand MyList to be generic;
 }

@@ -56,7 +56,7 @@ object Recap extends App {
   object MyList
 
   // case classes
-  case class Person(name: String, age: Int) // serializable, parameters are fields, apply methods, etc.
+  case class PersonOld(name: String, age: Int) // serializable, parameters are fields, apply methods, etc.
 
   // exceptions --> try/catch/finally
   // val throwsException = throw new RuntimeException // Nothing

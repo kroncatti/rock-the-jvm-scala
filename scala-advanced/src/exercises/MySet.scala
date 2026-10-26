@@ -5,6 +5,12 @@ import scala.annotation.tailrec
 trait MySet[A] extends (A => Boolean) {
   def contains(elem: A): Boolean
 
+  def -(elem: A): MySet[A]
+
+  def &(set: MySet[A]): MySet[A]
+
+  def --(set: MySet[A]): MySet[A]
+
   def +(elem: A): MySet[A]
 
   def ++(otherSet: MySet[A]): MySet[A]
@@ -23,6 +29,12 @@ trait MySet[A] extends (A => Boolean) {
 class EmptySet[A] extends MySet[A] {
   override def contains(elem: A) = false
 
+  override def -(elem: A): MySet[A] = this
+
+  override def &(set: MySet[A]): MySet[A] = this
+
+  override def --(set: MySet[A]): MySet[A] = this
+
   override def +(elem: A): MySet[A] = new NonEmptySet[A](elem, this)
 
   override def ++(otherSet: MySet[A]): MySet[A] = otherSet
@@ -39,6 +51,15 @@ class EmptySet[A] extends MySet[A] {
 class NonEmptySet[A](head: A, tail: MySet[A]) extends MySet[A] {
 
   override def contains(elem: A): Boolean = elem == head || tail.contains(elem)
+
+  override def -(elem: A): MySet[A] =
+    if (elem == head) tail
+    else tail - elem + head
+
+  override def &(anotherSet: MySet[A]): MySet[A] = filter(value => anotherSet.contains(value))
+
+
+  override def --(anotherSet: MySet[A]): MySet[A] = filter(value => !anotherSet.contains(value))
 
   override def +(elem: A): MySet[A] = {
     if (this.contains(elem)) this
@@ -76,5 +97,12 @@ object MySet {
 
 object MySetPlayground extends App {
   val s = MySet(1, 2, 3, 4)
+  val t = MySet(2, 4, 5, 10)
   (s + 5 ++ MySet(-2, -3, -4) + 3).flatMap(x => MySet(x, x * 10)).filter(_ % 2 == 0).forEach(println)
+  println("--------")
+  (s - 2).forEach(println)
+  println("--------")
+  (s & t).forEach(println)
+  println("--------")
+  (s -- t).forEach(println)
 }

@@ -47,6 +47,8 @@ object CurryingPartialFn extends App {
   private val insertName = concatenator("Hello, I'm ", _: String, ", how are you")
   println(insertName("Kaleb"))
 
+
+  // EXERCISE 1. Curried number formatter
   sealed abstract class DoubleFormatter(val pattern: String) extends (Double => String) {
     def apply(x: Double): String = pattern.format(x)
   }

@@ -1,5 +1,6 @@
 package lectures.part2as
 
+
 object CurryingPartialFn extends App {
   val superAdder: Int => Int => Int = x => y => x + y
 
@@ -21,7 +22,9 @@ object CurryingPartialFn extends App {
 
   // EXERCISE
   private val simpleAddFunction = (x: Int, y: Int) => x + y
+
   private def simpleAddMethod(x: Int, y: Int): Int = x + y
+
   private def curriedAddMethod(x: Int)(y: Int): Int = x + y
 
   // implement added7 of type Int => Int = y => 7 + y out of each one of the simple adders above
@@ -30,9 +33,9 @@ object CurryingPartialFn extends App {
   val functionAdded7New: Int => Int = simpleAddFunction(7, _)
   val functionAdded7New2 = simpleAddFunction.curried(7)
 
-  val methodAdded7: Int => Int =  (y: Int) => simpleAddMethod(7, y)
-  val methodAdded7New: Int => Int =  simpleAddMethod(7, _)
-  val methodAdded7New2 =  simpleAddMethod(7, _: Int)
+  val methodAdded7: Int => Int = (y: Int) => simpleAddMethod(7, y)
+  val methodAdded7New: Int => Int = simpleAddMethod(7, _)
+  val methodAdded7New2 = simpleAddMethod(7, _: Int)
 
   val curryAdded7: Int => Int = curriedAddMethod(7)
   val curryAdded7New = curriedAddMethod(7) _
@@ -40,6 +43,31 @@ object CurryingPartialFn extends App {
 
   // underscores are powerful
   def concatenator(a: String, b: String, c: String) = a + b + c
-  val insertName = concatenator("Hello, I'm ", _: String, ", how are you")
+
+  private val insertName = concatenator("Hello, I'm ", _: String, ", how are you")
   println(insertName("Kaleb"))
+
+  sealed abstract class DoubleFormatter(val pattern: String) extends (Double => String) {
+    def apply(x: Double): String = pattern.format(x)
+  }
+
+  private object DoubleFormatter {
+    case object FourTwoF extends DoubleFormatter("%4.2f")
+    case object EightSixG extends DoubleFormatter("%8.6g")
+    case object FourteenTwelveF extends DoubleFormatter("%14.12f")
+  }
+
+  private def formatDouble(formatter: DoubleFormatter)(lst: List[Double]): List[String] =
+    lst.map(formatter)
+
+  private val firstFormatter = formatDouble(DoubleFormatter.EightSixG)(_)
+  private val secondFormatter = formatDouble(DoubleFormatter.FourteenTwelveF)(_)
+  private val thirdFormatter = formatDouble(DoubleFormatter.FourTwoF)(_)
+
+
+  private val myListExample = List(1333.4214321, Math.PI, 134.335, 122.3999)
+  println(firstFormatter(myListExample))
+  println(secondFormatter(myListExample))
+  println(thirdFormatter(myListExample))
+
 }

@@ -68,4 +68,35 @@ object LazyEvaluation extends App {
     a <- List(1, 2, 3) if a % 2 == 0 // Uses Lazy Vals!!!!
   } yield a + 1
   List(1, 2, 3).withFilter(_ % 2 == 0).map(_ + 1) // (withFilter, map) work together to give us a list of ints here
+
+  /*
+    Exercise: Implement a lazily evaluated, singly linked STREAM of elements, potentially infinite
+
+    naturals ==> MyStream.from(1)(x => x + 1) // Stream of Natural numbers
+    naturals.take(100).foreach(println) // lazily evaluated stream of the first 100 naturals (finite stream)
+    naturals.foreach(println) // Should crash, because it is infinite
+    naturals.map(_ * 2) // Stream of all even numbers
+   */
+
+  abstract class MyStream[+A] {
+    def isEmpty: Boolean
+    def head: A
+    def tail: MyStream[A]
+
+    def #::[B >: A](element: B): MyStream[B] // prepends element
+    def ++[B >: A](anotherStream: MyStream[B]): MyStream[B] // concatenate to streams
+
+    def foreach(f: A => Unit): Unit
+    def map[B](f: A => B): MyStream[B]
+    def flatMap[B](f: A => MyStream[B]): MyStream[B]
+    def filter(predicate: A => Boolean): MyStream[A]
+
+    def take(n: Int): MyStream[A] // takes first N elements out of the stream
+    def takeAsList(n: Int): List[A]
+  }
+
+  object MyStream {
+    def from[A](start: A)(generator: A => A): MyStream[A] = ???
+  }
+
 }

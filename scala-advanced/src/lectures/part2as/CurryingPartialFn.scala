@@ -59,17 +59,40 @@ object CurryingPartialFn extends App {
     case object FourteenTwelveF extends DoubleFormatter("%14.12f")
   }
 
-  private def formatDouble(formatter: DoubleFormatter)(lst: List[Double]): List[String] =
-    lst.map(formatter)
+  private def formatDouble(formatter: DoubleFormatter)(value: Double): String =
+    formatter(value)
 
   private val firstFormatter = formatDouble(DoubleFormatter.EightSixG)(_)
   private val secondFormatter = formatDouble(DoubleFormatter.FourteenTwelveF)(_)
   private val thirdFormatter = formatDouble(DoubleFormatter.FourTwoF)(_)
 
 
-  private val myListExample = List(1333.4214321, Math.PI, 134.335, 122.3999)
-  println(firstFormatter(myListExample))
-  println(secondFormatter(myListExample))
-  println(thirdFormatter(myListExample))
+  private val myListExample = List(1333.4214321, Math.E, Math.PI, 134.335, 122.3999)
+  println(myListExample.map(firstFormatter))
+  println(myListExample.map(secondFormatter))
+  println(myListExample.map(thirdFormatter))
 
+  // EXERCISE 2. EXPLORE differences between:
+  // - functions vs methods
+  // - parameters: by-name vs 0-lambda
+  private def byName(n: => Int): Int = n + 1
+  private def byFunction(f: () => Int) = f() + 1
+
+  private def method: Int = 42
+  private def parenMethod(): Int = 42
+
+  /*
+    Calling byName and byFunction
+    - int
+    - method
+    - parenmethod
+    - lambda
+    - partially applied function
+   */
+  println(byName(2)) // Compiles, n is evaluated lazily;
+  // println(byFunction(2)) does not compile since it expects a function;
+  println(byName(method)) // same for method
+  // println(byFunction(method)) does not compile since it expects a function;
+  println(byName(parenMethod()))
+  // println(byFunction(parenMethod())) does not compile
 }

@@ -94,3 +94,30 @@ object StreamsPlayGround extends App {
       .toList()
   )
 }
+
+object LazyEvalPlayground extends App {
+  def byValue(x: Int) = {
+    println("in")
+    x + x
+  }
+
+  def byName(x: => Int) = {
+    println("in")
+    x + x
+  }
+
+  byValue {
+    println("eval")
+    1
+  }
+  byName {
+    println("eval")
+    1
+  }
+
+  lazy val y = {
+    println("eval")
+    1
+  }
+  y + y
+}

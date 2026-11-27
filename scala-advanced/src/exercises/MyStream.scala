@@ -95,29 +95,21 @@ object StreamsPlayGround extends App {
   )
 }
 
-object LazyEvalPlayground extends App {
-  def byValue(x: Int) = {
-    println("in")
-    x + x
-  }
+object Exercises extends App {
+  // [FIRST] stream of Fibonacci numbers
+  // 0, 1, 1, 2, 3, 5, 8, 13, 21
+  def fibonacci(first: Long = 0L, second: Long = 1L): MyStream[Long] =
+    new Cons(first, fibonacci(second, first + second))
 
-  def byName(x: => Int) = {
-    println("in")
-    x + x
-  }
+  val fib = fibonacci()
+  println(fib.take(50).foreach(println))
 
-  byValue {
-    println("eval")
-    1
-  }
-  byName {
-    println("eval")
-    1
-  }
-
-  lazy val y = {
-    println("eval")
-    1
-  }
-  y + y
+  // [SECOND] stream of prime numbers with Eratosthenes sieve
+  //   - [2, 3, 4, 5, ...]
+  //   - --> Filter out all numbers divisible by 2 except 2
+  //   - --> [2, 3, 5, 7, 9, 11]
+  //   - --> Filter out all numbers divisible by 3 except 3
+  //   - --> [2, 3, 5, 7, 11, 13, 17]
+  //   - --> Filter out all numbers divisible by 5 except 5
+  //   - --> ...
 }

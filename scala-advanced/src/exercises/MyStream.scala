@@ -104,6 +104,8 @@ object Exercises extends App {
   val fib = fibonacci()
   println(fib.take(50).foreach(println))
 
+  println("------ FINISHED EXERCISE ------")
+
   // [SECOND] stream of prime numbers with Eratosthenes sieve
   //   - [2, 3, 4, 5, ...]
   //   - --> Filter out all numbers divisible by 2 except 2
@@ -111,5 +113,11 @@ object Exercises extends App {
   //   - --> Filter out all numbers divisible by 3 except 3
   //   - --> [2, 3, 5, 7, 11, 13, 17]
   //   - --> Filter out all numbers divisible by 5 except 5
-  //   - --> ...
+  def primesEratos(numbers: MyStream[Int]): MyStream[Int] =
+    if (numbers.isEmpty) numbers
+    else new Cons(numbers.head, primesEratos(numbers.tail.filter(_ % numbers.head != 0)))
+
+  val naturals = MyStream.from(2)(_ + 1)
+  println(primesEratos(naturals.take(100)).toList())
+
 }
